@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         success.classList.add('show');
                         modalInstance.hide();
                         form.reset();
-                        ajaxPagination('http://todolist/todo/page-1').then((response) => {
+                        ajaxPagination('http://todo-list/todo/page-1').then((response) => {
                             content.innerHTML = response;
                         });
                         setTimeout(() => success.classList.remove('show'), 5000);
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 itemPagination.forEach(item => {
                     item.addEventListener('click', function (e) {
                         e.preventDefault();
-                        let url = window.location.href + this.getAttribute('href');
+                        let url = this.getAttribute('href');
 
                         ajaxPagination(url).then((response) => {
                             content.innerHTML = response;
