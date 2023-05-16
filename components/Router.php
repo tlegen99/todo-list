@@ -1,0 +1,56 @@
+<?php
+
+namespace components;
+
+class Router
+{
+    private $routes;
+    
+    public function __construct()
+    {
+        $routesPath   = ROOT . '/config/routes.php';
+        $this->routes = include($routesPath);
+    }
+    
+    public function run()
+    {
+        $url = $this->getUrl();
+        
+        foreach ($this->routes as $urlPattern => $path) {
+
+            if (preg_match("~$urlPattern~", $url)) {
+                
+                $internalRoute = preg_replace("~$urlPattern~", $path, $url);
+
+                $data = explode('/', $internalRoute);
+                
+                $class = array_shift($data).'Controller';
+                $method = array_shift($data);
+                
+                $parameters = $data;
+                
+                $classFile = ROOT . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR . $class . '.php';
+                
+                if (file_exists($classFile)) {
+                    $className = '\controllers\\' . $class;
+                    $classObject = new $className();
+                
+                    if (method_exists($classObject, $method)) {
+                        $result = call_user_func_array([$classObject, $method], $parameters);
+        
+                        if ($result != null) {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    public function getUrl()
+    {
+        if ( ! empty($_SERVER['REQUEST_URI'])) {
+            return trim($_SERVER['REQUEST_URI'], '/');
+        }
+    }
+}

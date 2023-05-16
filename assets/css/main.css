@@ -1,0 +1,7 @@
+.alert-success {
+  display: none;
+}
+
+.alert-success.show {
+  display: block;
+}
