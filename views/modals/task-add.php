@@ -8,6 +8,7 @@
             </div>
             <div class="modal-body">
                 <form action="/task/create" method="POST" data-js="ajax-form">
+                    <input type="hidden" name="MySessionId">
                     <div class="mb-3">
                         <label for="nameUser" class="form-label">Имя пользователя</label>
                         <input type="text" name="name_user" class="form-control" id="nameUser">

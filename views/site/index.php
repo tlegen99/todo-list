@@ -3,6 +3,8 @@ require_once ROOT . "/views/layouts/_header.php";
 ?>
 
 <div class="container">
+
+    <?php session_flash(); ?>
     
     <div class="col-xl-3 col-xl-3 col-md-6">
         <select class="form-select">
@@ -13,8 +15,10 @@ require_once ROOT . "/views/layouts/_header.php";
         </select>
     </div>
     
-    <div data-js="pagination-content">
-        <?= $this->todoAjax($page) ?>
+    <div class="col-xl-9 col-sm-12">
+        <?php foreach ($taskList as $task): ?>
+            <?php include ROOT . "/views/include/task-item.php"; ?>
+        <?php endforeach; ?>
     </div>
     
     <?php require_once ROOT . "/views/include/pagination.php"; ?>

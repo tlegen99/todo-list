@@ -15,7 +15,8 @@ class Router
     public function run()
     {
         $url = $this->getUrl();
-        
+        $url = preg_replace('~\?(.+?)$~isu', '', $url);
+
         foreach ($this->routes as $urlPattern => $path) {
 
             if (preg_match("~$urlPattern~", $url)) {
