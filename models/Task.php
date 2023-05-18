@@ -19,11 +19,11 @@ class Task
         return $query->fetchColumn();
     }
     
-    public static function getTaskOffsetList($limit, $offset)
+    public static function getTaskOffsetList($limit, $offset, $sortVal, $sort)
     {
         $connect = Db::getConnection();
 
-        $sql = "SELECT id, name_user, email, description, status FROM task ORDER BY id DESC LIMIT {$limit} OFFSET {$offset}";
+        $sql = "SELECT id, name_user, email, description, status FROM task ORDER BY {$sortVal} {$sort} LIMIT {$limit} OFFSET {$offset}";
         $query = $connect->prepare($sql);
         $query->execute();
         
@@ -40,14 +40,13 @@ class Task
         return $taskList;
     }
     
-    public static function getListTaskView($page)
+    public static function getListTaskView($page, $sortVal, $sort)
     {
         $limit  = self::SHOW_BY_DEFAULT;
         $offset = $limit * ($page - 1);
 
-        return self::getTaskOffsetList($limit, $offset);
+        return self::getTaskOffsetList($limit, $offset, $sortVal, $sort);
     }
-    
     
     public static function createTask($params)
     {
