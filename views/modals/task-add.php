@@ -1,4 +1,4 @@
-<!-- Modal -->
+<!-- Modal Task -->
 <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="/task/create" method="POST" data-js="form-validate">
+                <form action="<?= route("task/create") ?>" method="POST" data-js="form-validate">
                     <input type="hidden" name="MySessionId">
                     <div class="mb-3">
                         <label for="nameUser" class="form-label">Имя пользователя</label>

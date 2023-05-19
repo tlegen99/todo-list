@@ -22,7 +22,7 @@
         </div>
 
         <div class="col-md-3 text-end">
-            <button type="button" class="btn btn-primary">Войти как администратор</button>
+            <a href="<?= route("login") ?>" class="btn btn-primary">Войти как администратор</a>
         </div>
     </header>
 </div>

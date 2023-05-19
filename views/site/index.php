@@ -1,12 +1,10 @@
-<?php
-require_once ROOT . "/views/layouts/_header.php";
-?>
+<?php require_once ROOT . "/views/layouts/_header.php"; ?>
     
     <div class="container">
         
         <?php session_flash(); ?>
         
-        <div class="col-xl-3 col-xl-3 col-md-6">
+        <div class="col-xl-3 col-md-6">
             <select class="form-select" data-js="sort-task-select">
                 <?= options_task($countTaskPage) ?>
             </select>
