@@ -1,6 +1,7 @@
 <?php
 
 namespace controllers;
+
 use http\Header;
 use models\Task;
 
@@ -9,10 +10,18 @@ class TaskController
     public function create()
     {
         $params = [];
-
-        $params["name_user"] = trim($_POST["name_user"]);
-        $params["email"] = trim($_POST["email"]);
-        $params["description"] = trim($_POST["description"]);
+        
+        if ($_POST['name_user']) {
+            $params["name_user"] = htmlentities($_POST['name_user'], ENT_QUOTES, "UTF-8");
+        }
+        
+        if ($_POST['email']) {
+            $params["email"] = htmlentities($_POST['email'], ENT_QUOTES, "UTF-8");
+        }
+        
+        if ($_POST['description']) {
+            $params["description"] = htmlentities($_POST['description'], ENT_QUOTES, "UTF-8");
+        }
         
         Task::createTask($params);
         
@@ -20,6 +29,6 @@ class TaskController
         
         header("Location: /");
         
-		return true;
+        return true;
     }
 }

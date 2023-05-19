@@ -47,13 +47,17 @@ if ( ! function_exists("route_pagination")) {
         
         $getSort = http_build_query($params);
         
-        return route('?page=' . $page . '&' . $getSort);
+        if ($getSort) {
+            $getSort = '&' . $getSort;
+        }
+        
+        return route('?page=' . $page . $getSort);
     }
 }
 
 if ( ! function_exists("option_task")) {
     
-    function option_task()
+    function options_task(int $countTaskPage)
     {
         $options = [
             [
@@ -64,7 +68,7 @@ if ( ! function_exists("option_task")) {
             [
                 "text"     => "email",
                 "sort_val" => "email",
-                "sort"     => "desc",
+                "sort"     => "asc",
             ],
             [
                 "text"     => "статус",
@@ -73,23 +77,23 @@ if ( ! function_exists("option_task")) {
             ],
         ];
         
-        $html = "";
+        $html = "<option disabled selected hidden>Отсортировать по:</option>";
         
         foreach ($options as $option) {
             
-            $selected = null;
-            if ($_GET["sort_val"] == $option["sort_val"]) {
-                $selected = " selected";
-                
+            $page = $countTaskPage;
+            
+            if (isset($_GET["sort_val"]) && $_GET["sort_val"] == $option["sort_val"]) {
                 if ($_GET["sort"] == "asc") {
+                    $page = 1;
                     $option["sort"] = "desc";
                 } else {
                     $option["sort"] = "asc";
                 }
             }
             
-            $url  = route("?sort_val=" . $option["sort_val"] . "&sort=" . $option["sort"]);
-            $html .= "<option value=\"{$url}\"{$selected}>" . $option["text"] . "</option>";
+            $url  = route("?page=" . $page . "&sort_val=" . $option["sort_val"] . "&sort=" . $option["sort"]);
+            $html .= "<option value=\"{$url}\">" . $option["text"] . "</option>";
         }
         
         return $html;

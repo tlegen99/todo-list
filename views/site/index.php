@@ -8,8 +8,7 @@ require_once ROOT . "/views/layouts/_header.php";
         
         <div class="col-xl-3 col-xl-3 col-md-6">
             <select class="form-select" data-js="sort-task-select">
-                <option disabled selected hidden>Отсортировать по:</option>
-                <?= option_task() ?>
+                <?= options_task($countTaskPage) ?>
             </select>
         </div>
         

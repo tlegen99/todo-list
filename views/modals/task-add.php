@@ -7,21 +7,21 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="/task/create" method="POST" data-js="ajax-form">
+                <form action="/task/create" method="POST" data-js="form-validate">
                     <input type="hidden" name="MySessionId">
                     <div class="mb-3">
                         <label for="nameUser" class="form-label">Имя пользователя</label>
-                        <input type="text" name="name_user" class="form-control" id="nameUser">
+                        <input type="text" name="name_user" class="form-control" id="nameUser" data-validate="name">
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email пользователя</label>
                         <input type="email" name="email" class="form-control" id="email"
-                               aria-describedby="emailHelp"
+                               aria-describedby="emailHelp" data-validate="email"
                         >
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label">Описание задачи</label>
-                        <textarea name="description" class="form-control" id="description"></textarea>
+                        <textarea name="description" class="form-control" id="description" data-validate="description"></textarea>
                     </div>
                     <button type="submit" name="submit" class="btn btn-primary">
                         Добавить
