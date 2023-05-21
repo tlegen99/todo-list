@@ -31,8 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if ( ! fieldVal) {
                     e.preventDefault();
                     let error         = document.createElement('div');
-                    error.className   = 'error';
-                    error.style.color = '#990033';
+                    error.className   = 'error text-danger';
                     error.innerHTML   = '*Заполните поле ' + '"' + fields[i].previousElementSibling.textContent + '"';
                     fields[i].parentElement.insertBefore(error, fields[i].nextSibling);
                 }

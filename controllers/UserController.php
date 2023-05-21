@@ -9,21 +9,31 @@ class UserController
     
     public function login()
     {
-        $name = null;
-        $password = null;
+        $name = '';
+        $password = '';
+        $errorName = '';
+        $errorPass = '';
         
         if (isset($_POST['submit'])) {
-            if ($_POST['name']) {
-                $name = $_POST['name'];
+            
+            $name = $_POST['name'];
+            $password = $_POST['password'];
+            
+            if (empty($name)) {
+                $errorName = 'поле "Логин пользователя" обязательно для заполнения';
             }
             
-            if ($_POST['password']) {
-                $password = $_POST['password'];
+            if (empty($password)) {
+                $errorPass = 'поле "Пароль" обязательно для заполнения';
             }
             
-            if ($name == $this->name && $password == $this->password) {
-                $_SESSION['user'] = $name;
-                header('Location: /admin');
+            if (!empty($name) || !empty($password)) {
+                if ($name == $this->name && $password == $this->password) {
+                    $_SESSION['user'] = $name;
+                    header('Location: /admin');
+                } else {
+                    session_flash('Неправильные реквизиты доступа!', 'danger');
+                }
             }
         }
         
