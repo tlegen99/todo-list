@@ -12,7 +12,7 @@
         <div class="col-xl-4 col-md-6 mt-5">
             <?php session_flash(); ?>
             
-            <form action="<?= route("login") ?>" method="POST">
+            <form action="<?= route("admin/login") ?>" method="POST">
                 <input type="hidden" name="MySessionId">
                 <div class="mb-3">
                     <label for="name" class="form-label">Логин пользователя</label>

@@ -23,17 +23,19 @@ if ( ! function_exists("route")) {
 
 if ( ! function_exists("session_flash")) {
     
-    function session_flash(?string $message = null, $status = "success")
+    function session_flash(?string $message = null, $background = "success")
     {
         if ($message) {
             $_SESSION["flash"] = $message;
+            $_SESSION["background"] = $background;
         } else {
             if ( ! empty($_SESSION["flash"])) {
-                echo "<div class=\"alert alert-{$status} alert-fixed-top\">
+                echo "<div class=\"alert alert-{$_SESSION["background"]} alert-fixed-top\">
                         {$_SESSION["flash"]}
                     </div>";
             }
             unset($_SESSION["flash"]);
+            unset($_SESSION["background"]);
         }
     }
 }
@@ -48,10 +50,10 @@ if ( ! function_exists("route_pagination")) {
         $getSort = http_build_query($params);
         
         if ($getSort) {
-            $getSort = '&' . $getSort;
+            $getSort = "&" . $getSort;
         }
         
-        return route('?page=' . $page . $getSort);
+        return route("?page=" . $page . $getSort);
     }
 }
 
@@ -85,7 +87,7 @@ if ( ! function_exists("option_task")) {
             
             if (isset($_GET["sort_val"]) && $_GET["sort_val"] == $option["sort_val"]) {
                 if ($_GET["sort"] == "asc") {
-                    $page = 1;
+                    $page           = 1;
                     $option["sort"] = "desc";
                 } else {
                     $option["sort"] = "asc";
@@ -97,5 +99,17 @@ if ( ! function_exists("option_task")) {
         }
         
         return $html;
+    }
+}
+
+if ( ! function_exists("check_admin")) {
+    
+    function check_admin()
+    {
+        if (isset($_SESSION["user"]) && $_SESSION["user"] == "admin") {
+            return true;
+        }
+        
+        return false;
     }
 }

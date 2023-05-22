@@ -40,6 +40,26 @@ class Task
         return $taskList;
     }
     
+    public static function getTaskById($id)
+    {
+        $connect = Db::getConnection();
+
+        $sql = "SELECT id, name_user, email, description, status FROM task where id = {$id}";
+        $query = $connect->prepare($sql);
+        $query->execute();
+        
+        $task = [];
+        $row = $query->fetch();
+        
+        $task["id"]          = $row["id"];
+        $task["name_user"]   = $row["name_user"];
+        $task["email"]       = $row["email"];
+        $task["description"] = $row["description"];
+        $task["status"]      = $row["status"];
+        
+        return $task;
+    }
+    
     public static function getListTaskView($page, $sortVal, $sort)
     {
         $limit  = self::SHOW_BY_DEFAULT;
@@ -63,5 +83,24 @@ class Task
         }
         
         return 0;
+    }
+    
+    public static function updateTaskById($id, $params)
+    {
+        $connect = Db::getConnection();
+        
+        $sql    = "UPDATE task SET name_user = :name_user, email = :email, description = :description WHERE id = :id";
+        $result = $connect->prepare($sql);
+//        $result->bindParam(':status', 1, \PDO::PARAM_INT);
+        $result->bindParam(':id', $id, \PDO::PARAM_INT);
+        $result->bindParam(':name_user', $params['name_user'], \PDO::PARAM_STR);
+        $result->bindParam(':email', $params['email'], \PDO::PARAM_STR);
+        $result->bindParam(':description', $params['description'], \PDO::PARAM_STR);
+        
+        return $result->execute();
+    }
+    
+    public static function editTaskStatus() {
+    
     }
 }

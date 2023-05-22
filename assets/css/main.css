@@ -1,0 +1,9 @@
+.card .card-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-header__update {
+  cursor: pointer;
+  text-decoration: none;
+}

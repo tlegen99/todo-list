@@ -1,9 +1,9 @@
 <!-- Modal Task -->
-<div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="taskAddModal" tabindex="-1" aria-labelledby="taskAddModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Новая задача</h5>
+                <h5 class="modal-title" id="taskAddModalLabel">Новая задача</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -21,7 +21,9 @@
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label">Описание задачи</label>
-                        <textarea name="description" class="form-control" id="description" data-validate="description"></textarea>
+                        <textarea rows="6" name="description" class="form-control"
+                                  id="description" data-validate="description"
+                        ></textarea>
                     </div>
                     <button type="submit" name="submit" class="btn btn-primary">
                         Добавить

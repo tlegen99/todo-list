@@ -27,10 +27,10 @@ class UserController
                 $errorPass = 'поле "Пароль" обязательно для заполнения';
             }
             
-            if (!empty($name) || !empty($password)) {
+            if (!empty($name) && !empty($password)) {
                 if ($name == $this->name && $password == $this->password) {
                     $_SESSION['user'] = $name;
-                    header('Location: /admin');
+                    header('Location: /');
                 } else {
                     session_flash('Неправильные реквизиты доступа!', 'danger');
                 }
@@ -40,5 +40,11 @@ class UserController
         require_once ROOT . '/views/user/login.php';
         
         return true;
+    }
+    
+    public function logout()
+    {
+        unset($_SESSION['user']);
+        header('Location: /');
     }
 }
