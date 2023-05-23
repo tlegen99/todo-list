@@ -29,8 +29,16 @@
                     ><?= $task["description"] ?>
                     </textarea>
                 </div>
+                <div class="mb-3 col-md-6">
+                    <label for="status" class="form-label">Статус</label>
+                    <select name="status" class="form-select" id="status">
+                        <?php //foreach (): ?>
+                      <option value="0">В процессе</option>
+                      <option value="1">Выполнено</option>
+                    </select>
+                </div>
                 <button type="submit" name="submit" class="btn btn-primary">
-                    Добавить
+                    Сохранить изменения
                 </button>
             </form>
         </div>

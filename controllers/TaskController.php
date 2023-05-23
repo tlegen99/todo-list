@@ -13,15 +13,15 @@ class TaskController
         
         if (isset($_POST['submit'])) {
             
-            if ($_POST['name_user']) {
+            if (isset($_POST['name_user'])) {
                 $params["name_user"] = htmlentities($_POST['name_user'], ENT_QUOTES, "UTF-8");
             }
             
-            if ($_POST['email']) {
+            if (isset($_POST['email'])) {
                 $params["email"] = htmlentities($_POST['email'], ENT_QUOTES, "UTF-8");
             }
             
-            if ($_POST['description']) {
+            if (isset($_POST['description'])) {
                 $params["description"] = htmlentities($_POST['description'], ENT_QUOTES, "UTF-8");
             }
             
@@ -45,23 +45,24 @@ class TaskController
         
         if (isset($_POST['submit'])) {
             
-            if ($_POST['name_user']) {
+            if (isset($_POST['name_user'])) {
                 $options["name_user"] = htmlentities($_POST['name_user'], ENT_QUOTES, "UTF-8");
             }
             
-            if ($_POST['email']) {
+            if (isset($_POST['email'])) {
                 $options["email"] = htmlentities($_POST['email'], ENT_QUOTES, "UTF-8");
             }
             
-            if ($_POST['description']) {
+            if (isset($_POST['description'])) {
                 $options["description"] = htmlentities($_POST['description'], ENT_QUOTES, "UTF-8");
             }
-            
-//            if ($_POST["status"]) {
-//                $options["description"] = $_POST["status"];
-//            }
+
+            if (isset($_POST["status"])) {
+                $options["status"] = $_POST["status"];
+            }
             
             if(Task::updateTaskById($id, $options)) {
+                Task::updateStatusAdmin($id, $options);
                 header("Location: /");
             }
         }

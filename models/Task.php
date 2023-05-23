@@ -12,7 +12,7 @@ class Task
     {
         $connect = Db::getConnection();
         
-        $sql = "SELECT COUNT(*) FROM task";
+        $sql   = "SELECT COUNT(*) FROM task";
         $query = $connect->prepare($sql);
         $query->execute();
         
@@ -22,8 +22,8 @@ class Task
     public static function getTaskOffsetList($limit, $offset, $sortVal, $sort)
     {
         $connect = Db::getConnection();
-
-        $sql = "SELECT id, name_user, email, description, status FROM task ORDER BY {$sortVal} {$sort} LIMIT {$limit} OFFSET {$offset}";
+        
+        $sql   = "SELECT id, name_user, email, description, status FROM task ORDER BY {$sortVal} {$sort} LIMIT {$limit} OFFSET {$offset}";
         $query = $connect->prepare($sql);
         $query->execute();
         
@@ -43,13 +43,13 @@ class Task
     public static function getTaskById($id)
     {
         $connect = Db::getConnection();
-
-        $sql = "SELECT id, name_user, email, description, status FROM task where id = {$id}";
+        
+        $sql   = "SELECT id, name_user, email, description, status FROM task where id = {$id}";
         $query = $connect->prepare($sql);
         $query->execute();
         
         $task = [];
-        $row = $query->fetch();
+        $row  = $query->fetch();
         
         $task["id"]          = $row["id"];
         $task["name_user"]   = $row["name_user"];
@@ -64,8 +64,18 @@ class Task
     {
         $limit  = self::SHOW_BY_DEFAULT;
         $offset = $limit * ($page - 1);
-
+        
         return self::getTaskOffsetList($limit, $offset, $sortVal, $sort);
+    }
+    
+    public static function getTaskStatus($id)
+    {
+        $task = self::getTaskById($id);
+        
+        if ($task["status"] == 1) {
+            return "<span class=\"text-success\">Выполнено</span>";
+        }
+        return "<span class=\"text-danger\">В процессе</span>";
     }
     
     public static function createTask($params)
@@ -74,9 +84,9 @@ class Task
         
         $sql    = "INSERT task (name_user, email, description) VALUES (:name_user, :email, :description)";
         $result = $connect->prepare($sql);
-        $result->bindParam(':name_user', $params['name_user'], \PDO::PARAM_STR);
-        $result->bindParam(':email', $params['email'], \PDO::PARAM_STR);
-        $result->bindParam(':description', $params['description'], \PDO::PARAM_STR);
+        $result->bindParam(":name_user", $params["name_user"], \PDO::PARAM_STR);
+        $result->bindParam(":email", $params["email"], \PDO::PARAM_STR);
+        $result->bindParam(":description", $params["description"], \PDO::PARAM_STR);
         
         if ($result->execute()) {
             return $connect->lastInsertId();
@@ -89,18 +99,26 @@ class Task
     {
         $connect = Db::getConnection();
         
-        $sql    = "UPDATE task SET name_user = :name_user, email = :email, description = :description WHERE id = :id";
+        $sql    = "UPDATE task SET name_user = :name_user, email = :email, description = :description, status = :status WHERE id = {$id}";
         $result = $connect->prepare($sql);
-//        $result->bindParam(':status', 1, \PDO::PARAM_INT);
-        $result->bindParam(':id', $id, \PDO::PARAM_INT);
-        $result->bindParam(':name_user', $params['name_user'], \PDO::PARAM_STR);
-        $result->bindParam(':email', $params['email'], \PDO::PARAM_STR);
-        $result->bindParam(':description', $params['description'], \PDO::PARAM_STR);
+
+        $result->bindParam(":name_user", $params["name_user"], \PDO::PARAM_STR);
+        $result->bindParam(":email", $params["email"], \PDO::PARAM_STR);
+        $result->bindParam(":description", $params["description"], \PDO::PARAM_STR);
+        $result->bindParam(":status", $params["status"], \PDO::PARAM_INT);
         
         return $result->execute();
     }
     
-    public static function editTaskStatus() {
-    
+    public static function updateStatusAdmin($id, $params)
+    {
+        $connect = Db::getConnection();
+        
+        $sql    = "UPDATE task SET status_admin = 1 WHERE id = {$id} AND (description != :description)";
+        $result = $connect->prepare($sql);
+        
+        $result->bindParam(":description", $params["description"], \PDO::PARAM_STR);
+        
+        $result->execute();
     }
 }
