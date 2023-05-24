@@ -26,15 +26,13 @@
                     <label for="description" class="form-label">Описание задачи</label>
                     <textarea rows="10" name="description" class="form-control"
                               id="description" data-validate="description"
-                    ><?= $task["description"] ?>
-                    </textarea>
+                    ><?= $task["description"] ?></textarea>
                 </div>
                 <div class="mb-3 col-md-6">
                     <label for="status" class="form-label">Статус</label>
                     <select name="status" class="form-select" id="status">
-                        <?php //foreach (): ?>
-                      <option value="0">В процессе</option>
-                      <option value="1">Выполнено</option>
+                      <option value="0"<?= $task["status"] == 0 ? " selected" : "" ?>>В процессе</option>
+                      <option value="1"<?= $task["status"] == 1 ? " selected" : "" ?>>Выполнено</option>
                     </select>
                 </div>
                 <button type="submit" name="submit" class="btn btn-primary">

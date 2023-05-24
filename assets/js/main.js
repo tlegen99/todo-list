@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = event.target.value;
     });
     
-    // проверка полей в форме
+    // проверка полей в попап-форме
     let formValidate = document.querySelectorAll('[data-js="form-validate"]');
     
     function removeError(form) {

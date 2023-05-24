@@ -23,18 +23,19 @@ class Task
     {
         $connect = Db::getConnection();
         
-        $sql   = "SELECT id, name_user, email, description, status FROM task ORDER BY {$sortVal} {$sort} LIMIT {$limit} OFFSET {$offset}";
+        $sql   = "SELECT id, name_user, email, description, status, edited_admin FROM task ORDER BY {$sortVal} {$sort} LIMIT {$limit} OFFSET {$offset}";
         $query = $connect->prepare($sql);
         $query->execute();
         
         $taskList = [];
         
         foreach ($query->fetchAll() as $key => $row) {
-            $taskList[$key]["id"]          = $row["id"];
-            $taskList[$key]["name_user"]   = $row["name_user"];
-            $taskList[$key]["email"]       = $row["email"];
-            $taskList[$key]["description"] = $row["description"];
-            $taskList[$key]["status"]      = $row["status"];
+            $taskList[$key]["id"]           = $row["id"];
+            $taskList[$key]["name_user"]    = $row["name_user"];
+            $taskList[$key]["email"]        = $row["email"];
+            $taskList[$key]["description"]  = $row["description"];
+            $taskList[$key]["status"]       = $row["status"];
+            $taskList[$key]["edited_admin"] = $row["edited_admin"];
         }
         
         return $taskList;
@@ -99,25 +100,24 @@ class Task
     {
         $connect = Db::getConnection();
         
-        $sql    = "UPDATE task SET name_user = :name_user, email = :email, description = :description, status = :status WHERE id = {$id}";
+        $sql    = "UPDATE task SET name_user = :name_user, email = :email, status = :status WHERE id = {$id}";
         $result = $connect->prepare($sql);
 
         $result->bindParam(":name_user", $params["name_user"], \PDO::PARAM_STR);
         $result->bindParam(":email", $params["email"], \PDO::PARAM_STR);
-        $result->bindParam(":description", $params["description"], \PDO::PARAM_STR);
         $result->bindParam(":status", $params["status"], \PDO::PARAM_INT);
         
         return $result->execute();
     }
     
-    public static function updateStatusAdmin($id, $params)
+    public static function updateEditedAdminAndDescription($id, $options)
     {
         $connect = Db::getConnection();
         
-        $sql    = "UPDATE task SET status_admin = 1 WHERE id = {$id} AND (description != :description)";
+        $sql    = "UPDATE task SET description = :description, edited_admin = 1 WHERE id = {$id} AND description != :description";
         $result = $connect->prepare($sql);
-        
-        $result->bindParam(":description", $params["description"], \PDO::PARAM_STR);
+
+        $result->bindParam(":description", $options["description"], \PDO::PARAM_STR);
         
         $result->execute();
     }

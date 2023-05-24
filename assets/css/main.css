@@ -1,9 +1,18 @@
 .card .card-header {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.card .card-header > * {
+  margin-right: 10px;
 }
 
 .card-header__update {
   cursor: pointer;
   text-decoration: none;
+}
+
+.card-edited__admin {
+  font-style: italic;
 }

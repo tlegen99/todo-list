@@ -57,7 +57,20 @@ if ( ! function_exists("route_pagination")) {
     }
 }
 
-if ( ! function_exists("option_task")) {
+if ( ! function_exists("include_pagination")) {
+    
+    function include_pagination(int $page, int $countTaskPage)
+    {
+        if ($countTaskPage < 2) {
+            return false;
+        }
+        require_once ROOT . "/views/include/pagination.php";
+        
+        return true;
+    }
+}
+
+if ( ! function_exists("options_task")) {
     
     function options_task(int $countTaskPage)
     {
@@ -87,7 +100,7 @@ if ( ! function_exists("option_task")) {
             
             if (isset($_GET["sort_val"]) && $_GET["sort_val"] == $option["sort_val"]) {
                 if ($_GET["sort"] == "asc") {
-                    $page           = 1;
+                    $page = 1;
                     $option["sort"] = "desc";
                 } else {
                     $option["sort"] = "asc";

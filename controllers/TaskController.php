@@ -37,6 +37,10 @@ class TaskController
     
     public function update(int $id)
     {
+        if (!check_admin()) {
+            die('Вы не администратор - <a href="/admin/login">Авторизоваться</a>');
+        }
+        
         if ($id) {
             $task = Task::getTaskById($id);
         }
@@ -62,7 +66,7 @@ class TaskController
             }
             
             if(Task::updateTaskById($id, $options)) {
-                Task::updateStatusAdmin($id, $options);
+                Task::updateEditedAdminAndDescription($id, $options);
                 header("Location: /");
             }
         }

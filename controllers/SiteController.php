@@ -16,7 +16,7 @@ class SiteController
         $taskList = Task::getListTaskView($page, $sortVal, $sort);
         
         $countTaskPage = ceil(Task::getTaskCount() / Task::SHOW_BY_DEFAULT);
-        
+
         require_once ROOT . '/views/site/index.php';
         
         return true;
