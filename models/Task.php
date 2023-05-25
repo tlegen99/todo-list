@@ -85,9 +85,9 @@ class Task
         
         $sql    = "INSERT task (name_user, email, description) VALUES (:name_user, :email, :description)";
         $result = $connect->prepare($sql);
-        $result->bindParam(":name_user", $params["name_user"], \PDO::PARAM_STR);
-        $result->bindParam(":email", $params["email"], \PDO::PARAM_STR);
-        $result->bindParam(":description", $params["description"], \PDO::PARAM_STR);
+        $result->bindParam(":name_user", $params->nameUser, \PDO::PARAM_STR);
+        $result->bindParam(":email", $params->email, \PDO::PARAM_STR);
+        $result->bindParam(":description", $params->description, \PDO::PARAM_STR);
         
         if ($result->execute()) {
             return $connect->lastInsertId();
@@ -103,21 +103,21 @@ class Task
         $sql    = "UPDATE task SET name_user = :name_user, email = :email, status = :status WHERE id = {$id}";
         $result = $connect->prepare($sql);
 
-        $result->bindParam(":name_user", $params["name_user"], \PDO::PARAM_STR);
-        $result->bindParam(":email", $params["email"], \PDO::PARAM_STR);
-        $result->bindParam(":status", $params["status"], \PDO::PARAM_INT);
+        $result->bindParam(":name_user", $params->nameUser, \PDO::PARAM_STR);
+        $result->bindParam(":email", $params->email, \PDO::PARAM_STR);
+        $result->bindParam(":status", $params->status, \PDO::PARAM_INT);
         
         return $result->execute();
     }
     
-    public static function updateEditedAdminAndDescription($id, $options)
+    public static function updateEditedAdminAndDescription($id, $params)
     {
         $connect = Db::getConnection();
         
         $sql    = "UPDATE task SET description = :description, edited_admin = 1 WHERE id = {$id} AND description != :description";
         $result = $connect->prepare($sql);
 
-        $result->bindParam(":description", $options["description"], \PDO::PARAM_STR);
+        $result->bindParam(":description", $params->description, \PDO::PARAM_STR);
         
         $result->execute();
     }

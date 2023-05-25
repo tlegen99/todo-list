@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use components\TaskDTO;
 use http\Header;
 use models\Task;
 
@@ -13,17 +14,7 @@ class TaskController
         
         if (isset($_POST['submit'])) {
             
-            if (isset($_POST['name_user'])) {
-                $params["name_user"] = htmlentities($_POST['name_user'], ENT_QUOTES, "UTF-8");
-            }
-            
-            if (isset($_POST['email'])) {
-                $params["email"] = htmlentities($_POST['email'], ENT_QUOTES, "UTF-8");
-            }
-            
-            if (isset($_POST['description'])) {
-                $params["description"] = htmlentities($_POST['description'], ENT_QUOTES, "UTF-8");
-            }
+            $params = new TaskDTO($_POST);
             
             Task::createTask($params);
             
@@ -45,28 +36,14 @@ class TaskController
             $task = Task::getTaskById($id);
         }
         
-        $options = [];
-        
         if (isset($_POST['submit'])) {
             
-            if (isset($_POST['name_user'])) {
-                $options["name_user"] = htmlentities($_POST['name_user'], ENT_QUOTES, "UTF-8");
-            }
-            
-            if (isset($_POST['email'])) {
-                $options["email"] = htmlentities($_POST['email'], ENT_QUOTES, "UTF-8");
-            }
-            
-            if (isset($_POST['description'])) {
-                $options["description"] = htmlentities($_POST['description'], ENT_QUOTES, "UTF-8");
-            }
+            $params = new TaskDTO($_POST);
 
-            if (isset($_POST["status"])) {
-                $options["status"] = $_POST["status"];
-            }
-            
-            if(Task::updateTaskById($id, $options)) {
-                Task::updateEditedAdminAndDescription($id, $options);
+            if(Task::updateTaskById($id, $params)) {
+                Task::updateEditedAdminAndDescription($id, $params);
+                
+                session_flash("<strong>Отлично!</strong> Задача отредактирована.", "success");
                 header("Location: /");
             }
         }
