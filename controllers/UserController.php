@@ -1,5 +1,5 @@
 <?php
-
+// TODO: переделать на табличку с юзерами и ролями, проверять на админа с помощью запросов
 namespace controllers;
 
 class UserController

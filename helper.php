@@ -1,5 +1,6 @@
 <?php
 
+// функция для постройки абсолютной ссылки
 if ( ! function_exists("route")) {
     
     function route(string $url)
@@ -21,6 +22,7 @@ if ( ! function_exists("route")) {
     }
 }
 
+// функция пуш уведомлений
 if ( ! function_exists("session_flash")) {
     
     function session_flash(?string $message = null, $background = "success")
@@ -40,6 +42,8 @@ if ( ! function_exists("session_flash")) {
     }
 }
 
+// функция для ссылкок в пагинации без затирания гет параметров
+// в адресной строке
 if ( ! function_exists("route_pagination")) {
     
     function route_pagination(int $page)
@@ -57,6 +61,7 @@ if ( ! function_exists("route_pagination")) {
     }
 }
 
+// функция для подключения пагинации с проверкой на кол-во страниц
 if ( ! function_exists("include_pagination")) {
     
     function include_pagination(int $page, int $countTaskPage)
@@ -70,6 +75,7 @@ if ( ! function_exists("include_pagination")) {
     }
 }
 
+// функция для формирования пунктов сортировки
 if ( ! function_exists("options_task")) {
     
     function options_task(int $countTaskPage)
@@ -115,6 +121,8 @@ if ( ! function_exists("options_task")) {
     }
 }
 
+// функция для проверки админа в сессии
+// TODO: в будущем переделать на абстрактный класс
 if ( ! function_exists("check_admin")) {
     
     function check_admin()
