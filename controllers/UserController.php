@@ -9,6 +9,10 @@ class UserController
     
     public function login()
     {
+        if (isset($_SESSION["user"])) {
+            header('Location: /');
+        }
+        
         $name = '';
         $password = '';
         $errorName = '';
