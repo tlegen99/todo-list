@@ -28,6 +28,7 @@ class Router
                 $data = explode('/', $internalRoute);
                 
                 $class  = array_shift($data) . 'Controller';
+                $class  = ucfirst($class);
                 $method = array_shift($data);
                 
                 $parameters = $data;

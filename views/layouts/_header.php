@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Приложение-задачник</title>
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css" type="text/css">
