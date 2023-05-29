@@ -7,6 +7,13 @@ class UserController
     private $name = "admin";
     private $password = "123";
     
+    public function index()
+    {
+        require_once ROOT . '/views/user/index.php';
+        
+        return true;
+    }
+    
     public function login()
     {
         if (isset($_SESSION["user"])) {

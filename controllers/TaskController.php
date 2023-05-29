@@ -16,11 +16,10 @@ class TaskController
             
             $params = new TaskDTO($_POST);
             
-            Task::createTask($params);
-            
-            session_flash("<strong>Отлично!</strong> Задача добавлена.", "success");
-            
-            header("Location: /");
+            if (Task::createTask($params)) {
+                session_flash("<strong>Отлично!</strong> Задача добавлена.", "success");
+                header("Location: /");
+            }
         }
         
         return true;

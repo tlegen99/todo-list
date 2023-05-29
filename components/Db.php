@@ -1,17 +1,23 @@
 <?php
 
 namespace components;
+use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Events\Dispatcher;
+use Illuminate\Container\Container;
 
 class Db
 {
-    public static function getConnection()
+    public static function connection()
     {
         $paramsPath = ROOT . '/config/db_params.php';
-        $params     = include($paramsPath);
+        $params     =  require_once $paramsPath;
+
+        $capsule = new Capsule;
         
-        $dns = "mysql:host={$params['host']};dbname={$params['dbname']};charset=utf8";
-        $db  = new \PDO($dns, $params['user'], $params['password']);
+        $capsule->addConnection($params);
         
-        return $db;
+        $capsule->setEventDispatcher(new Dispatcher(new Container));
+        $capsule->setAsGlobal();
+        $capsule->bootEloquent();
     }
 }

@@ -1,9 +1,12 @@
 <?php
 
 return [
-    'host'           => 'localhost',
-    'dbname'         => 'todo-list',
-    'user'           => 'root',
-    'password'       => '',
-    'table_versions' => 'versions',
+    'driver' => 'mysql',
+    'host' => 'localhost',
+    'database' => 'todo-list',
+    'username' => 'root',
+    'password' => '',
+    'charset' => 'utf8',
+    'collation' => 'utf8_general_ci',
+    'prefix' => '',
 ];

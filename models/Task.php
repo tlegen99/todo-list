@@ -1,77 +1,43 @@
 <?php
 
 namespace models;
+use Illuminate\Database\Eloquent\Model;
 
-use components\Db;
-
-class Task
+class Task extends Model
 {
+    protected $table = 'task';
+    
     public const SHOW_BY_DEFAULT = 3;
     
     public static function getTaskCount()
     {
-        $connect = Db::getConnection();
-        
-        $sql   = "SELECT COUNT(*) FROM task";
-        $query = $connect->prepare($sql);
-        $query->execute();
-        
-        return $query->fetchColumn();
+        return static::count();
     }
     
     public static function getTaskOffsetList($limit, $offset, $sortVal, $sort)
     {
-        $connect = Db::getConnection();
-        
-        $sql   = "SELECT id, name_user, email, description, status, edited_admin FROM task ORDER BY {$sortVal} {$sort} LIMIT {$limit} OFFSET {$offset}";
-        $query = $connect->prepare($sql);
-        $query->execute();
-        
-        $taskList = [];
-        
-        foreach ($query->fetchAll() as $key => $row) {
-            $taskList[$key]["id"]           = $row["id"];
-            $taskList[$key]["name_user"]    = $row["name_user"];
-            $taskList[$key]["email"]        = $row["email"];
-            $taskList[$key]["description"]  = $row["description"];
-            $taskList[$key]["status"]       = $row["status"];
-            $taskList[$key]["edited_admin"] = $row["edited_admin"];
-        }
-        
-        return $taskList;
+        return static::orderBy($sortVal, $sort)
+                   ->limit($limit)
+                   ->offset($offset)
+                   ->get();
     }
     
     public static function getTaskById($id)
     {
-        $connect = Db::getConnection();
-        
-        $sql   = "SELECT id, name_user, email, description, status FROM task where id = {$id}";
-        $query = $connect->prepare($sql);
-        $query->execute();
-        
-        $task = [];
-        $row  = $query->fetch();
-        
-        $task["id"]          = $row["id"];
-        $task["name_user"]   = $row["name_user"];
-        $task["email"]       = $row["email"];
-        $task["description"] = $row["description"];
-        $task["status"]      = $row["status"];
-        
-        return $task;
+        return static::where('id', $id)->first();
     }
     
     public static function getListTaskView($page, $sortVal, $sort)
     {
-        $limit  = self::SHOW_BY_DEFAULT;
+        $limit  = static::SHOW_BY_DEFAULT;
         $offset = $limit * ($page - 1);
         
-        return self::getTaskOffsetList($limit, $offset, $sortVal, $sort);
+        return static::getTaskOffsetList($limit, $offset, $sortVal, $sort);
     }
     
     public static function getTaskStatus($id)
     {
-        $task = self::getTaskById($id);
+        $task = static::getTaskById($id);
         
         if ($task["status"] == 1) {
             return "<span class=\"text-success\">Выполнено</span>";
@@ -81,44 +47,41 @@ class Task
     
     public static function createTask($params)
     {
-        $connect = Db::getConnection();
+        $task = new static;
         
-        $sql    = "INSERT task (name_user, email, description) VALUES (:name_user, :email, :description)";
-        $result = $connect->prepare($sql);
-        $result->bindParam(":name_user", $params->nameUser, \PDO::PARAM_STR);
-        $result->bindParam(":email", $params->email, \PDO::PARAM_STR);
-        $result->bindParam(":description", $params->description, \PDO::PARAM_STR);
+        $task->name_user = $params->nameUser;
+        $task->email = $params->email;
+        $task->description = $params->description;
         
-        if ($result->execute()) {
-            return $connect->lastInsertId();
+        if ($task->save()) {
+            return true;
         }
         
-        return 0;
+        return false;
     }
     
     public static function updateTaskById($id, $params)
     {
-        $connect = Db::getConnection();
+        $task = static::find($id);
         
-        $sql    = "UPDATE task SET name_user = :name_user, email = :email, status = :status WHERE id = {$id}";
-        $result = $connect->prepare($sql);
-
-        $result->bindParam(":name_user", $params->nameUser, \PDO::PARAM_STR);
-        $result->bindParam(":email", $params->email, \PDO::PARAM_STR);
-        $result->bindParam(":status", $params->status, \PDO::PARAM_INT);
+        $task->name_user = $params->nameUser;
+        $task->email = $params->email;
+        $task->status = $params->status;
         
-        return $result->execute();
+        if ($task->save()) {
+            return true;
+        }
+        
+        return false;
     }
     
     public static function updateEditedAdminAndDescription($id, $params)
     {
-        $connect = Db::getConnection();
-        
-        $sql    = "UPDATE task SET description = :description, edited_admin = 1 WHERE id = {$id} AND description != :description";
-        $result = $connect->prepare($sql);
-
-        $result->bindParam(":description", $params->description, \PDO::PARAM_STR);
-        
-        $result->execute();
+        return static::where('id', $id)
+            ->where('description', '!=' ,$params->description)
+            ->update([
+            'description' => $params->description,
+            'edited_admin' => 1,
+        ]);
     }
 }
