@@ -69,6 +69,7 @@ if ( ! function_exists("include_pagination")) {
         if ($countTaskPage < 2) {
             return false;
         }
+        
         require_once ROOT . "/views/include/pagination.php";
         
         return true;
@@ -127,7 +128,7 @@ if ( ! function_exists("check_admin")) {
     
     function check_admin()
     {
-        if (isset($_SESSION["user"]) && $_SESSION["user"] == "admin") {
+        if (isset($_SESSION["user"]) && $_SESSION["user"] == 1) {
             return true;
         }
         

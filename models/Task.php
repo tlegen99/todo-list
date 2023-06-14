@@ -1,11 +1,12 @@
 <?php
 
 namespace models;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
-    protected $table = 'task';
+    protected $table = "task";
     
     public const SHOW_BY_DEFAULT = 3;
     
@@ -17,14 +18,14 @@ class Task extends Model
     public static function getTaskOffsetList($limit, $offset, $sortVal, $sort)
     {
         return static::orderBy($sortVal, $sort)
-                   ->limit($limit)
-                   ->offset($offset)
-                   ->get();
+                     ->limit($limit)
+                     ->offset($offset)
+                     ->get();
     }
     
     public static function getTaskById($id)
     {
-        return static::where('id', $id)->first();
+        return static::where("id", $id)->first();
     }
     
     public static function getListTaskView($page, $sortVal, $sort)
@@ -49,8 +50,8 @@ class Task extends Model
     {
         $task = new static;
         
-        $task->name_user = $params->nameUser;
-        $task->email = $params->email;
+        $task->name_user   = $params->nameUser;
+        $task->email       = $params->email;
         $task->description = $params->description;
         
         if ($task->save()) {
@@ -65,8 +66,8 @@ class Task extends Model
         $task = static::find($id);
         
         $task->name_user = $params->nameUser;
-        $task->email = $params->email;
-        $task->status = $params->status;
+        $task->email     = $params->email;
+        $task->status    = $params->status;
         
         if ($task->save()) {
             return true;
@@ -77,11 +78,11 @@ class Task extends Model
     
     public static function updateEditedAdminAndDescription($id, $params)
     {
-        return static::where('id', $id)
-            ->where('description', '!=' ,$params->description)
-            ->update([
-            'description' => $params->description,
-            'edited_admin' => 1,
-        ]);
+        return static::where("id", $id)
+                     ->where("description", "!=", $params->description)
+                     ->update([
+                         "description"  => $params->description,
+                         "edited_admin" => 1,
+                     ]);
     }
 }

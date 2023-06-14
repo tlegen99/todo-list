@@ -1,3 +1,8 @@
+<?php
+$page = $page ?? null;
+$countTaskPage = $countTaskPage ?? null;
+?>
+
 <nav aria-label="Page navigation example" class="mt-4">
     <ul class="pagination">
         <li class="page-item<?= $page > 1 ? "" : " disabled"; ?>">
@@ -7,7 +12,7 @@
         </li>
         
         <?php for ($i = 1; $i <= $countTaskPage; $i++): ?>
-            <li class="page-item">
+            <li class="page-item<?= $page === $i ? " active" : "" ?>">
                 <a href="<?= route_pagination($i) ?>" class="page-link">
                     <?= $i ?>
                 </a>

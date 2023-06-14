@@ -10,8 +10,6 @@ class TaskController
 {
     public function create()
     {
-        $params = [];
-        
         if (isset($_POST['submit'])) {
             
             $params = new TaskDTO($_POST);

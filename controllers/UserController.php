@@ -1,6 +1,7 @@
 <?php
 // TODO: переделать на табличку с юзерами и ролями, проверять на админа с помощью запросов
 namespace controllers;
+use models\User;
 
 class UserController
 {
@@ -20,30 +21,33 @@ class UserController
             header('Location: /');
         }
         
-        $name = '';
-        $password = '';
-        $errorName = '';
-        $errorPass = '';
+        $name = null;
+        $password = null;
+        $errorName = null;
+        $errorPass = null;
         
         if (isset($_POST['submit'])) {
             
             $name = $_POST['name'];
             $password = $_POST['password'];
             
-            if (empty($name)) {
+            if (!User::checkUserName($name)) {
                 $errorName = 'поле "Логин пользователя" обязательно для заполнения';
             }
             
-            if (empty($password)) {
+            if (!User::checkUserPass($password)) {
                 $errorPass = 'поле "Пароль" обязательно для заполнения';
             }
             
-            if (!empty($name) && !empty($password)) {
-                if ($name == $this->name && $password == $this->password) {
-                    $_SESSION['user'] = $name;
-                    header('Location: /');
-                } else {
+            if (!isset($errorName) && !isset($errorPass)) {
+                
+                $userId = User::checkUserData($name, $password);
+                
+                if ($userId === false) {
                     session_flash('Неправильные реквизиты доступа!', 'danger');
+                } else {
+                    $_SESSION['user'] = $userId;
+                    header('Location: /');
                 }
             }
         }
